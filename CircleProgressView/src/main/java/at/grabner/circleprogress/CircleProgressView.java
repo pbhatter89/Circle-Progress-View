@@ -110,7 +110,7 @@ public class CircleProgressView extends View {
     AnimationStateChangedListener mAnimationStateChangedListener;
     private int mBarWidth = 40;
     private int mRimWidth = 40;
-    private int mStartAngle = 270;
+    private int mStartAngle = 135;
     private float mOuterContourSize = 1;
     private float mInnerContourSize = 1;
 
@@ -243,7 +243,7 @@ public class CircleProgressView extends View {
      * @return the angle between 0 (EAST) and 360
      */
     private static float normalizeAngle(float _angle) {
-        return (((_angle % 360) + 360) % 360);
+        return (((_angle % 270) + 270) % 270);
     }
 
     /**
@@ -283,7 +283,7 @@ public class CircleProgressView extends View {
         // we can assume that atan2 will not return a negative value
         // greater than one partial rotation
         if (angle < 0) {
-            angle += 360;
+            angle += 270;
         }
 
         return angle;
@@ -564,7 +564,7 @@ public class CircleProgressView extends View {
         return mStartAngle;
     }
 
-    public void setStartAngle(@IntRange(from = 0,to = 360) int _startAngle) {
+    public void setStartAngle(@IntRange(from = 0,to = 270) int _startAngle) {
         // get a angle between 0 and 360
         mStartAngle = (int) normalizeAngle(_startAngle);
     }
@@ -1096,6 +1096,7 @@ public class CircleProgressView extends View {
         setSeekModeEnabled(a.getBoolean(R.styleable.CircleProgressView_cpv_seekMode, mSeekModeEnabled));
 
         setStartAngle(a.getInt(R.styleable.CircleProgressView_cpv_startAngle, mStartAngle));
+        //setStartAngle(mStartAngle);
 
         setShowTextWhileSpinning(a.getBoolean(R.styleable.CircleProgressView_cpv_showTextInSpinningMode, mShowTextWhileSpinning));
 
@@ -1602,29 +1603,29 @@ public class CircleProgressView extends View {
             drawDebug(canvas);
         }
 
-        float degrees = (360f / mMaxValue * mCurrentValue);
+        float degrees = (270 / mMaxValue * mCurrentValue);
 
         // Draw the background circle
         if (mBackgroundCircleColor != 0) {
-            canvas.drawArc(mInnerCircleBound, 360, 360, false, mBackgroundCirclePaint);
+            canvas.drawArc(mInnerCircleBound, 67, 270, false, mBackgroundCirclePaint);
         }
         //Draw the rim
         if (mRimWidth > 0) {
             if (!mShowBlock) {
-                canvas.drawArc(mCircleBounds, 360, 360, false, mRimPaint);
+                canvas.drawArc(mCircleBounds, 135, 270, false, mRimPaint);
             } else {
-                drawBlocks(canvas, mCircleBounds, mStartAngle, 360, false, mRimPaint);
+                drawBlocks(canvas, mCircleBounds, mStartAngle, 270, false, mRimPaint);
             }
         }
 
         //Draw outer contour
         if (mOuterContourSize > 0) {
-            canvas.drawArc(mCircleOuterContour, 360, 360, false, mOuterContourPaint);
+            canvas.drawArc(mCircleOuterContour, 67, 270, false, mOuterContourPaint);
         }
 
         //Draw outer contour
         if (mInnerContourSize > 0) {
-            canvas.drawArc(mCircleInnerContour, 360, 360, false, mInnerContourPaint);
+            canvas.drawArc(mCircleInnerContour, 67, 270, false, mInnerContourPaint);
         }
 
         //Draw spinner
@@ -1879,7 +1880,7 @@ public class CircleProgressView extends View {
                 mTouchEventCount = 0;
                 PointF point = new PointF(event.getX(), event.getY());
                 float angle = getRotationAngleForPointFromStart(point);
-                setValueAnimated(mMaxValue / 360f * angle, 800);
+                setValueAnimated(mMaxValue / 270f * angle, 800);
                 return true;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -1887,7 +1888,7 @@ public class CircleProgressView extends View {
                 if (mTouchEventCount > 5) { //touch/move guard
                     PointF point = new PointF(event.getX(), event.getY());
                     float angle = getRotationAngleForPointFromStart(point);
-                    setValue(mMaxValue / 360f * angle);
+                    setValue(mMaxValue / 270f * angle);
                     return true;
                 } else {
                     return false;
